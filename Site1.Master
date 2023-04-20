@@ -1,0 +1,146 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site1.master.cs" Inherits="WebApplication2.Site1" %>
+
+<!DOCTYPE html>
+
+<html>
+<head runat="server">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title></title>
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="JavaScript.js"></script>
+    <link href="StyleSheet1.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css"/>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
+</head>
+<body>
+      <nav id="navegacion">
+          <div><a href="/Inicio.aspx" target="_self"><img src="https://i.ibb.co/SKTSZzr/image.png" alt="WhothefuckisPage logo"></a></div>
+            <ul>
+                <li><a href="/Inicio.aspx" target="_self">Pagina Principal</a></li>
+                <li><a href="/SobreMi.aspx" target="_self">Sobre Mi</a></li>
+                <li><a href="/Contacto.aspx" target="_self">Contacto</a></li>
+                <li><a href="/Registro.html" target="_self">Registrarse</a></li>
+                <li><a href="https://www.google.com/" target="_blank">Google</a></li>
+                <li><a href="https://www.facebook.com/" target="_blank">Facebook</a></li>
+                <li><a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank">Youtube</a></li>
+            </ul>
+        </nav>
+
+    <button id="menu-toggle">≡</button>
+    <div id="menu">
+        <p id="navegacioninterna">Navegacion Interna</p>
+        <ul>
+            <li ><a class="lateralopcion">Inicio</a>
+              <ul class="sublist">
+                <li><a href="/Inicio.aspx" target="_self">Inicio</a></li>
+                <li><a href="#">Subopción</a></li>
+                <li><a href="#">Subopción</a></li>
+              </ul>
+            </li>
+            <li><a class="lateralopcion">Contacto</a>
+              <ul class="sublist">
+                <li><a href="/Contacto.aspx">Contacto</a></li>
+                <li><a href="#">Subopción</a></li>
+              </ul>
+            </li>
+            <li><a class="lateralopcion">Sobre Mi</a>
+              <ul class="sublist">
+                <li><a href="/SobreMi.aspx">Sobre Mi</a></li>
+                <li><a href="/SobreMi.aspx#MisLA">Mis Lenguajes Aprendidos</a><li>
+                <li><a href="/SobreMi.aspx#GaleriaDP">Galeria de Proyectos</a></li>
+                <li><a href="#">Subopción</a></li>
+              </ul>
+            </li>
+        </ul>
+        <div style="align-items:center; padding:30px; display:inline-block; margin-left:12%;">
+            <label style="color:white;" id="lblModo" >Modo Oscuro
+                <button id="modo" onclick="cambiarModo()">
+                <span id="palanca"></span>
+                </button>
+            </label>
+        </div>
+        <div class="divisoraudio">
+            <audio id="audio" src="audio.mp3"></audio>
+            <button id="toggle-button">Activar/Desactivar música</button>
+            <button id="prev-button" class="botonprev">&lt;</button>
+            <button id="next-button" class="botonnext">&gt;</button>
+
+            <script>
+                /*Script para la musica*/
+                const playlist = [{ src: 'audio1.mp3', title: 'Never Gonna Give You Up' }, { src: 'audio2.mp3', title: 'What is Love' }, { src: 'audio3.mp3', title: 'GigaChad theme' }];
+
+                let currentIndex = 0;
+
+                const audio = document.getElementById("audio");
+                const toggleButton = document.getElementById("toggle-button");
+                const prevButton = document.getElementById("prev-button");
+                const nextButton = document.getElementById("next-button");
+
+                function playSong() {
+                    audio.src = playlist[currentIndex].src;
+                    audio.play();
+                    toggleButton.classList.add("active");
+                }
+
+                function togglePlayPause() {
+                    if (audio.paused) {
+                        audio.play();
+                        toggleButton.classList.add("active");
+                    } else {
+                        audio.pause();
+                        toggleButton.classList.remove("active");
+                    }
+                }
+
+                function playNextSong() {
+                    currentIndex = (currentIndex + 1) % playlist.length;
+                    playSong();
+                }
+
+                function playPrevSong() {
+                    currentIndex = (currentIndex - 1 + playlist.length) % playlist.length;
+                    playSong();
+                }
+
+                toggleButton.addEventListener("click", togglePlayPause);
+                nextButton.addEventListener("click", playNextSong);
+                prevButton.addEventListener("click", playPrevSong);
+
+                /*Modo Oscuro */
+                function cambiarModo() {
+                    var cuerpo = document.body;
+                    cuerpo.classList.toggle("oscuro");
+                    var palanca = document.getElementById("palanca");
+                    palanca.style.left = cuerpo.classList.contains("oscuro") ? "50%" : "0";
+
+                    // Almacenar la configuración del usuario en localStorage
+                    if (cuerpo.classList.contains("oscuro")) {
+                        localStorage.setItem("modoOscuro", "activado");
+                    } else {
+                        localStorage.setItem("modoOscuro", "desactivado");
+                    }
+                }
+
+                // Verificar si el usuario ha activado el modo oscuro previamente
+                const modoOscuro = localStorage.getItem("modoOscuro");
+                if (modoOscuro === "activado") {
+                    document.body.classList.add("oscuro");
+                    document.getElementById("palanca").style.left = "50%";
+                }
+            
+            </script>
+        </div>
+    </div>
+    <form id="form1" runat="server">
+        <div>
+            <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+            </asp:ContentPlaceHolder>
+        </div>
+    </form>
+            
+    <footer>@copyright Ingenieria Ucasal</footer>
+
+</body>
+</html>
